@@ -14,4 +14,5 @@ public interface CategoriaService extends BaseService<Categoria,Long> {
     List<Categoria> getAllCategoriasPadre();
     Categoria editado(Long id, Categoria categoria);
     List<Categoria> getAllHijasPorPadre(Long idPadre);
+    List<Categoria> getAllHijasBySucursal(Long idSucursal);
 }

@@ -84,4 +84,10 @@ public class CategoriaController {
         logger.info("INICIO UPDATE CATEGORIA HIJO");
         return ResponseEntity.ok(categoriaFacade.putCategoria(id, categoriaHijoDto));
     }
+
+    @GetMapping("/all/hijas/{idSucursal}")
+    public ResponseEntity<List<?>> getAllHijasBySucursal(@PathVariable Long idSucursal) {
+        logger.info("INICIO GET ALL HIJAS");
+        return ResponseEntity.ok(categoriaFacade.getAllHijasBySucursal(idSucursal));
+    }
 }

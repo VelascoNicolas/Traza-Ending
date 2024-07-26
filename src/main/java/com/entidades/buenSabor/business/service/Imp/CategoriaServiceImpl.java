@@ -100,4 +100,9 @@ public class CategoriaServiceImpl extends BaseServiceImp<Categoria,Long> impleme
     public List<Categoria> getAllHijasPorPadre(Long idPadre) {
         return categoriaRepository.getHijasByPadre(idPadre);
     }
+
+    @Override
+    public List<Categoria> getAllHijasBySucursal(Long idSucursal) {
+        return categoriaRepository.getAllHijasBySucursal(idSucursal);
+    }
 }

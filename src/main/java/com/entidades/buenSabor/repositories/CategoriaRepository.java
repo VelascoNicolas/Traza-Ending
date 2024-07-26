@@ -45,4 +45,7 @@ public interface CategoriaRepository extends BaseRepository<Categoria,Long>{
 
     @Query(value = "SELECT * FROM CATEGORIA WHERE CATEGORIA_ID = ?1", nativeQuery = true)
     List<Categoria> getHijasByPadre(Long idCategoriaPadre);
+
+    @Query(value = "SELECT * FROM CATEGORIA c JOIN SUCURSAL_CATEGORIA sc ON c.ID = sc.CATEGORIA_ID JOIN SUCURSAL s ON sc.SUCURSAL_ID = s.ID WHERE s.ID = ?1 AND c.CATEGORIA_ID IS NOT NULL", nativeQuery = true)
+    List<Categoria> getAllHijasBySucursal(Long idSucursal);
 }

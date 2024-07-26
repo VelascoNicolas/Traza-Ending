@@ -99,4 +99,13 @@ public class CategoriaFacadeImpl extends BaseFacadeImp<Categoria, CategoriaPadre
                 .map(categoriaMapper::toShortDTO)
                 .toList();
     }
+
+    @Override
+    public List<CategoriaHijoDto> getAllHijasBySucursal(Long idSucursal) {
+        var entities = categoriaService.getAllHijasBySucursal(idSucursal);
+        return entities
+                .stream()
+                .map(categoriaMapper::toShortDTO)
+                .toList();
+    }
 }
