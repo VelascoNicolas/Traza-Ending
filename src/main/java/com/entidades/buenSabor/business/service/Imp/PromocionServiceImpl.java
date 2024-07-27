@@ -224,11 +224,19 @@ public class PromocionServiceImpl extends BaseServiceImp<Promocion,Long> impleme
         }
 
         for (ImagenDto img : dto.getImagenes()) {
-            ImagenPromocion imgPromo = new ImagenPromocion();
-            imgPromo.setFechaBaja(LocalDate.of(9999, 12, 31));
-            imgPromo.setEliminado(img.isEliminado());
-            imgPromo.setUrl(img.getUrl());
-            fix.getImagenes().add(imgPromo);
+            if (img.getId() == null) {
+                ImagenPromocion imgPromo = new ImagenPromocion();
+                imgPromo.setFechaBaja(LocalDate.of(9999, 12, 31));
+                imgPromo.setEliminado(img.isEliminado());
+                imgPromo.setUrl(img.getUrl());
+                fix.getImagenes().add(imgPromo);
+            } else {
+                ImagenPromocion imgEdit = imagenRepo.getById(img.getId());
+                imgEdit.setFechaBaja(img.getFechaBaja());
+                imgEdit.setEliminado(img.isEliminado());
+                imgEdit.setUrl(img.getUrl());
+                imagenRepo.save(imgEdit);
+            }
         }
 
         for (Long suc : dto.getSucursalesId()) {
