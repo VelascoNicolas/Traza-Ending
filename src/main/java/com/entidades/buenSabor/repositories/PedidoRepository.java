@@ -72,6 +72,6 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
     List<PedidosCliente> pedidosCliente(Date initialDate, Date endDate);
 
     @Query(value = "SELECT CAST(sum(total) as DECIMAL(10, 2) )as Ganancias  , sum(total_costo)as Costo, sum(total - total_costo) as \"Resultado\"\n" +
-            "from pedido WHERE FECHA_PEDIDO BETWEEN '2024-06-01' AND '2024-06-30'", nativeQuery = true)
+            "from pedido WHERE FECHA_PEDIDO BETWEEN ?1 AND ?2", nativeQuery = true)
     GananciasNetas gananciasNetas(Date initialDate, Date endDate);
 }

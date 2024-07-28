@@ -256,10 +256,18 @@ public class BuenSaborApplication {
 			StockInsumoSucursal s2 = StockInsumoSucursal.builder().stockActual(40.0).stockMinimo(10.0).stockMaximo(50.0).articuloInsumo(harina).sucursal(sucursalMarDelPlata).build();
 			StockInsumoSucursal s3 = StockInsumoSucursal.builder().stockActual(20.0).stockMinimo(5.0).stockMaximo(50.0).articuloInsumo(queso).sucursal(sucursalMarDelPlata).build();
 			StockInsumoSucursal s4 = StockInsumoSucursal.builder().stockActual(20.0).stockMinimo(5.0).stockMaximo(50.0).articuloInsumo(tomate).sucursal(sucursalMarDelPlata).build();
+			StockInsumoSucursal s5 = StockInsumoSucursal.builder().stockActual(25.0).stockMinimo(1.0).stockMaximo(50.0).articuloInsumo(cocaCola).sucursal(sucursalGuaymallen).build();
+			StockInsumoSucursal s6 = StockInsumoSucursal.builder().stockActual(40.0).stockMinimo(10.0).stockMaximo(50.0).articuloInsumo(harina).sucursal(sucursalGuaymallen).build();
+			StockInsumoSucursal s7 = StockInsumoSucursal.builder().stockActual(20.0).stockMinimo(5.0).stockMaximo(50.0).articuloInsumo(queso).sucursal(sucursalGuaymallen).build();
+			StockInsumoSucursal s8 = StockInsumoSucursal.builder().stockActual(20.0).stockMinimo(5.0).stockMaximo(50.0).articuloInsumo(tomate).sucursal(sucursalGuaymallen).build();
 			stockInsumoSucursalRepository.save(s1);
 			stockInsumoSucursalRepository.save(s2);
 			stockInsumoSucursalRepository.save(s3);
 			stockInsumoSucursalRepository.save(s4);
+			stockInsumoSucursalRepository.save(s5);
+			stockInsumoSucursalRepository.save(s6);
+			stockInsumoSucursalRepository.save(s7);
+			stockInsumoSucursalRepository.save(s8);
 
 			// Crear Articulos Manufacturados
 			ArticuloManufacturado pizzaMuzarella = ArticuloManufacturado.builder().fechaBaja(fecha).

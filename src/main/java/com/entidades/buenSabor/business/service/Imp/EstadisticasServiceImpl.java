@@ -132,7 +132,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
 
         // Crear encabezado
         Row headerRowIngresosMensuales = sheet3.createRow(0);
-        String[] headersIngresosMensuales = {"Mes", "Ingresos"};
+        String[] headersIngresosMensuales = {"Mes", "Año", "Ingresos"};
         for (int i = 0; i < headersIngresosMensuales.length; i++) {
             Cell cell = headerRowIngresosMensuales.createCell(i);
             cell.setCellValue(headersIngresosMensuales[i]);
