@@ -33,7 +33,7 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
             "JOIN \n" +
             "    Pedido p ON dp.PEDIDO_ID = p.ID\n" +
             "WHERE \n" +
-            "    p.FECHA_PEDIDO BETWEEN :initialDate AND :endDate \n" +
+            "    p.FECHA_PEDIDO BETWEEN :initialDate AND :endDate AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2\n" +
             "GROUP BY \n" +
             "    p.FECHA_PEDIDO\n" +
             "ORDER BY \n" +
@@ -49,7 +49,7 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
             "JOIN \n" +
             "    Pedido p ON dp.PEDIDO_ID = p.ID\n" +
             "WHERE \n" +
-            "    p.FECHA_PEDIDO BETWEEN :initialDate AND :endDate\n" +
+            "    p.FECHA_PEDIDO BETWEEN :initialDate AND :endDate AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2\n" +
             "GROUP BY \n" +
             "    EXTRACT(YEAR FROM p.FECHA_PEDIDO), EXTRACT(MONTH FROM p.FECHA_PEDIDO)\n" +
             "ORDER BY \n" +
@@ -64,7 +64,7 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
             "JOIN \n" +
             "    Cliente c ON p.USER_NAME = c.USER_NAME\n" +
             "WHERE \n" +
-            "    p.FECHA_PEDIDO BETWEEN :initialDate AND :endDate\n" +
+            "    p.FECHA_PEDIDO BETWEEN :initialDate AND :endDate AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2\n" +
             "GROUP BY \n" +
             "    c.USER_NAME, c.NOMBRE, c.APELLIDO, p.FECHA_PEDIDO\n" +
             "ORDER BY \n" +
@@ -72,6 +72,6 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
     List<PedidosCliente> pedidosCliente(Date initialDate, Date endDate);
 
     @Query(value = "SELECT CAST(sum(total) as DECIMAL(10, 2) )as Ganancias  , sum(total_costo)as Costo, sum(total - total_costo) as \"Resultado\"\n" +
-            "from pedido WHERE FECHA_PEDIDO BETWEEN ?1 AND ?2", nativeQuery = true)
+            "from pedido WHERE FECHA_PEDIDO BETWEEN ?1 AND ?2 AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2", nativeQuery = true)
     GananciasNetas gananciasNetas(Date initialDate, Date endDate);
 }

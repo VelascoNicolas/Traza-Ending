@@ -293,6 +293,23 @@ public class BuenSaborApplication {
 			articuloManufacturadoRepository.save(pizzaMuzarella);
 			articuloManufacturadoRepository.save(pizzaNapolitana);
 
+			//Agregar a la sucursal los articulos manufacturados
+			Sucursal sucursalID1 = sucursalRepository.findWithArticulosById(1L);
+			Sucursal sucursalID2 = sucursalRepository.findWithArticulosById(2L);
+			ArticuloManufacturado articuloId1 = articuloManufacturadoRepository.findAllWithSucursales(5L);
+			ArticuloManufacturado articuloId2 = articuloManufacturadoRepository.findAllWithSucursales(6L);
+			sucursalID1.getManufacturados().add(articuloId1);
+			sucursalID1.getManufacturados().add(articuloId2);
+			sucursalID2.getManufacturados().add(articuloId1);
+			sucursalID2.getManufacturados().add(articuloId2);
+			articuloId1.getSucursales().add(sucursalID1);
+			articuloId2.getSucursales().add(sucursalID2);
+			sucursalRepository.save(sucursalID1);
+			sucursalRepository.save(sucursalID2);
+			articuloManufacturadoRepository.save(articuloId1);
+			articuloManufacturadoRepository.save(articuloId2);
+
+
 			// Establecer las relaciones entre estos objetos Articulos de la Receta independiente
 			ArticuloManufacturadoDetalle detalle1 = ArticuloManufacturadoDetalle.builder().fechaBaja(fecha).
 					articuloInsumo(harina).
@@ -397,6 +414,8 @@ public class BuenSaborApplication {
 			Promocion promocionId1 = promocionRepository.findAllWithSucursales(1L);
 			Promocion promocionId2 = promocionRepository.findAllWithSucursales(2L);
 			sucursalId1.getPromociones().add(promocionId1);
+			sucursalId1.getPromociones().add(promocionId2);
+			sucursalId2.getPromociones().add(promocionId1);
 			sucursalId2.getPromociones().add(promocionId2);
 			promocionId1.getSucursales().add(sucursalId1);
 			promocionId1.getSucursales().add(sucursalId2);

@@ -11,6 +11,10 @@ import java.util.List;
 
 @Repository
 public interface ArticuloManufacturadoRepository extends BaseRepository<ArticuloManufacturado,Long> {
+
+    @Query("SELECT a FROM ArticuloManufacturado a LEFT JOIN FETCH a.sucursales WHERE a.id = :id")
+    ArticuloManufacturado findAllWithSucursales(@Param("id") Long id);
+
     @Query(value = "SELECT EXISTS(\n" +
             "    SELECT 1\n" +
             "    FROM PROMOCION_DETALLE pd\n" +
