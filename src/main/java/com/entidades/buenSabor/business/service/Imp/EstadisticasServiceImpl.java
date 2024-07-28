@@ -202,7 +202,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
 
         // Crear encabezado
         Row headerRowPedidosClientes= sheet4.createRow(0);
-        String[] headersPedidoClientes = {"Email cliente", "Cantidad de pedidos"};
+        String[] headersPedidoClientes = {"Email cliente", "Cantidad de pedidos", "Fecha del Pedido"};
         for (int i = 0; i < headersPedidoClientes.length; i++) {
             Cell cell = headerRowPedidosClientes.createCell(i);
             cell.setCellValue(headersPedidoClientes[i]);
@@ -215,6 +215,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
             Row row = sheet4.createRow(rowNum++);
             row.createCell(0).setCellValue(r.getEmail());
             row.createCell(1).setCellValue(r.getTotalPedidos());
+            row.createCell(2).setCellValue(r.getFecha());
         }
 
         // Autosize columns

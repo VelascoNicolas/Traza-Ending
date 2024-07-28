@@ -59,6 +59,7 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
     @Query(value = "SELECT \n" +
             "    c.USER_NAME AS Email,\n" +
             "    COUNT(p.ID) AS TotalPedidos,\n" +
+            "    p.FECHA_PEDIDO AS Fecha\n" +
             "FROM \n" +
             "    Pedido p\n" +
             "JOIN \n" +
