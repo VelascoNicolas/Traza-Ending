@@ -13,7 +13,7 @@ public interface ArticuloInsumoFacade  {
     public String deleteById(Long id);
     public ArticuloInsumoDto update(ArticuloInsumoDto request, Long id);
     public List<ArticuloInsumoDto> getArticuloInsumoBySucursal(Long idSucursal);
-    public List<ArticuloInsumoDto> getElaborados();
+    public List<ArticuloInsumoDto> getElaborados(Long idSucursal);
     public List<ArticuloInsumoDto> getNoElaborados(Long idSucursal);
     public List<ArticuloInsumoDto> getArticuloInsumoBySucursalAndCategoria(Long idSucursal, Long idCategoria);
 }

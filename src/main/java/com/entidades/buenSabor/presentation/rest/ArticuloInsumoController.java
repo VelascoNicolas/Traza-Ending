@@ -58,10 +58,10 @@ public class ArticuloInsumoController {
     }
 
 
-    @GetMapping("/elaborados")
-    public ResponseEntity<List<?>> getElaborados() {
+    @GetMapping("/elaborados/sucursal/{idSucursal}")
+    public ResponseEntity<List<?>> getElaborados(@PathVariable Long idSucursal) {
         logger.info("INICIO GET ELABORADOS");
-        return ResponseEntity.ok(articuloInsumoFacade.getElaborados());
+        return ResponseEntity.ok(articuloInsumoFacade.getElaborados(idSucursal));
     }
 
     @GetMapping("/noElaborados/sucursal/{idSucursal}")

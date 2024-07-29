@@ -73,8 +73,8 @@ public class ArticuloInsumoFacadeImpl  implements ArticuloInsumoFacade {
     }
 
     @Override
-    public List<ArticuloInsumoDto> getElaborados() {
-        List<ArticuloInsumo> articulosInsumos = articuloInsumoService.getElaborados();
+    public List<ArticuloInsumoDto> getElaborados(Long idSucursal) {
+        List<ArticuloInsumo> articulosInsumos = articuloInsumoService.getElaborados(idSucursal);
         return articuloMapper.toDtoListInsumo(articulosInsumos);
     }
 

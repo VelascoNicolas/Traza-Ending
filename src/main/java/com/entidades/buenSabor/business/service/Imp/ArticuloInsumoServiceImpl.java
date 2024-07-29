@@ -57,8 +57,8 @@ public class ArticuloInsumoServiceImpl extends BaseServiceImp<ArticuloInsumo,Lon
     }
 
     @Override
-    public List<ArticuloInsumo> getElaborados() {
-        return articuloRepository.getElaborados();
+    public List<ArticuloInsumo> getElaborados(Long idSucursal) {
+        return articuloRepository.getElaborados(idSucursal);
     }
 
     @Override
