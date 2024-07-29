@@ -203,6 +203,9 @@ public class PromocionServiceImpl extends BaseServiceImp<Promocion,Long> impleme
         fix.setTipoPromocion(dto.getTipoPromocion());
 
         for (PromocionDetalleDto pd : dto.getPromocionDetalles()) {
+            if (pd.getId() == 0) {
+                pd.setId(null);
+            }
             if (pd.getId() == null) {
                 PromocionDetalle promoDet = new PromocionDetalle();
                 promoDet.setEliminado(pd.isEliminado());
@@ -224,6 +227,9 @@ public class PromocionServiceImpl extends BaseServiceImp<Promocion,Long> impleme
         }
 
         for (ImagenDto img : dto.getImagenes()) {
+            if (img.getId() == 0) {
+                img.setId(null);
+            }
             if (img.getId() == null) {
                 ImagenPromocion imgPromo = new ImagenPromocion();
                 imgPromo.setFechaBaja(LocalDate.of(9999, 12, 31));
