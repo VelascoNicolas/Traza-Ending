@@ -21,6 +21,6 @@ public interface ArticuloInsumoService extends BaseService<ArticuloInsumo,Long> 
     // Método para eliminar una imagen por su identificador público y Long
     ResponseEntity<String> deleteImage(String publicId, Long id);
     List<ArticuloInsumo> getElaborados();
-    List<ArticuloInsumo> getNoElaborados();
+    List<ArticuloInsumo> getNoElaborados(Long idSucursal);
     List<ArticuloInsumo> getBySucursalYCategoria(Long idSucursal, Long idCategoria);
 }

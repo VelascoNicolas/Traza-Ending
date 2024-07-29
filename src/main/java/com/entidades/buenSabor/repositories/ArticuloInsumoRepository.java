@@ -20,8 +20,13 @@ public interface ArticuloInsumoRepository extends BaseRepository<ArticuloInsumo,
 
     @Query(value = "SELECT * FROM ARTICULO_INSUMO ai JOIN ARTICULO a ON ai.ID = a.ID WHERE ES_PARA_ELABORAR = TRUE", nativeQuery = true)
     List<ArticuloInsumo> getElaborados();
-    @Query(value = "SELECT * FROM ARTICULO_INSUMO ai JOIN ARTICULO a ON ai.ID = a.ID WHERE ES_PARA_ELABORAR = FALSE", nativeQuery = true)
-    List<ArticuloInsumo> getNoElaborados();
+
+    @Query(value = "SELECT ai.*, a.*\n" +
+            "FROM ARTICULO_INSUMO ai\n" +
+            "INNER JOIN ARTICULO a ON ai.ID = a.ID\n" +
+            "INNER JOIN STOCK_INSUMO_SUCURSAL si ON ai.ID = si.ARTICULO_INSUMO\n" +
+            "WHERE si.SUCURSAL = ?1 AND ES_PARA_ELABORAR = FALSE", nativeQuery = true)
+    List<ArticuloInsumo> getNoElaborados(Long idSucursal);
 
     @Query(value = "SELECT ai.*, a.*\n" +
             "FROM ARTICULO_INSUMO ai\n" +

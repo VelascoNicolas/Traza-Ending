@@ -79,8 +79,8 @@ public class ArticuloInsumoFacadeImpl  implements ArticuloInsumoFacade {
     }
 
     @Override
-    public List<ArticuloInsumoDto> getNoElaborados() {
-        List<ArticuloInsumo> articulosInsumos = articuloInsumoService.getNoElaborados();
+    public List<ArticuloInsumoDto> getNoElaborados(Long idSucursal) {
+        List<ArticuloInsumo> articulosInsumos = articuloInsumoService.getNoElaborados(idSucursal);
         return articuloMapper.toDtoListInsumo(articulosInsumos);
     }
 

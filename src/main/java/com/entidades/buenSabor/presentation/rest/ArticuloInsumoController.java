@@ -64,10 +64,10 @@ public class ArticuloInsumoController {
         return ResponseEntity.ok(articuloInsumoFacade.getElaborados());
     }
 
-    @GetMapping("/noElaborados")
-    public ResponseEntity<List<?>> getNoElaborados() {
+    @GetMapping("/noElaborados/sucursal/{idSucursal}")
+    public ResponseEntity<List<?>> getNoElaborados(@PathVariable Long idSucursal) {
         logger.info("INICIO GET NO ELABORADOS");
-        return ResponseEntity.ok(articuloInsumoFacade.getNoElaborados());
+        return ResponseEntity.ok(articuloInsumoFacade.getNoElaborados(idSucursal));
     }
 
     @GetMapping("/{idSucursal}/{idCategoria}")
