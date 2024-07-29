@@ -63,7 +63,12 @@ public class Pedido extends Base{
         for (DetallePedido detallePedido : detallePedidos) {
             precioVenta += detallePedido.calcularSubTotal();
         }
-        this.setTotal(precioVenta + precioDelivery);
+        if (this.tipoEnvio == TipoEnvio.DELIVERY) {
+            this.setTotal(precioVenta + precioDelivery);
+        } else if (this.tipoEnvio == TipoEnvio.TAKE_AWAY) {
+            this.setTotal(precioVenta * 0.9);
+        }
+
         return precioVenta;
     }
 

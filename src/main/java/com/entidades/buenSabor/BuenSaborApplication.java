@@ -1,5 +1,11 @@
 package com.entidades.buenSabor;
 
+import com.entidades.buenSabor.business.service.ArticuloService;
+import com.entidades.buenSabor.business.service.Imp.ArticuloServiceImpl;
+import com.entidades.buenSabor.business.service.Imp.PedidoServiceImpl;
+import com.entidades.buenSabor.business.service.Imp.PromocionServiceImpl;
+import com.entidades.buenSabor.business.service.PromocionService;
+import com.entidades.buenSabor.domain.dto.DetallePedidoDTO;
 import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.domain.enums.*;
 import com.entidades.buenSabor.repositories.*;
@@ -95,6 +101,7 @@ public class BuenSaborApplication {
 				localidadRepository.save(localidad);
 			});
 			final LocalDate fecha = LocalDate.of(9999,12,31);
+			final LocalDate fechaActual = LocalDate.now();
 			// Etapa del dashboard
 			// Crear 1 pais
 			// Crear 2 provincias para ese pais
@@ -507,46 +514,49 @@ public class BuenSaborApplication {
 			logger.info("Empleado{}:",empleado1);
 
 			//Crea un pedido para el cliente
-			Pedido pedido = Pedido.builder().fechaPedido(LocalDate.now())
-					.tiempoDeEspera(LocalTime.now())
-					.total(300.0)
-					.totalCosto(170.6)
-					.estado(Estado.APROBADO)
-					.formaPago(FormaPago.MERCADO_PAGO)
-					.tipoEnvio(TipoEnvio.DELIVERY)
-					.sucursal(sucursalGuaymallen)
-					.domicilio(domicilioCliente
-					)
-					.build();
-			pedido.setFechaBaja(fecha);
-			DetallePedido detallePedido1 = DetallePedido.builder().articulo(pizzaMuzarella).cantidad(1).build();
-			DetallePedido detallePedido2 = DetallePedido.builder().articulo(cocaCola).cantidad(2).build();
+			PedidoServiceImpl pedidoService = new PedidoServiceImpl();
+			PromocionService promocionService = new PromocionServiceImpl();
+			ArticuloService articuloService = new ArticuloServiceImpl();
+			Pedido save = new Pedido();
+			save.setFechaPedido(fechaActual);
+			save.setEliminado(false);
+			save.setEstado(Estado.APROBADO);
+			save.setTipoEnvio(TipoEnvio.TAKE_AWAY);
+			save.setFormaPago(FormaPago.EFECTIVO);
+			save.setDomicilio(domicilioCliente);
+			save.setSucursal(sucursalGuaymallen);
+			save.setFactura(null);
+			save.setCliente(cliente);
+			save.setEmpleado(empleado);
+			save.setTiempoDeEspera(LocalTime.of(16,30));
 
-			detallePedido1.setFechaBaja(fecha);
-			detallePedido2.setFechaBaja(fecha);
+			DetallePedido detallePedido = new DetallePedido();
+			detallePedido.setEliminado(false);
+			detallePedido.setFechaBaja(fecha);
+			detallePedido.setCantidad(2);
+			detallePedido.setSubTotal(140.0);
+			detallePedido.setArticulo(cocaCola);
+			detallePedido.setPromocion(null);
+			save.getDetallePedidos().add(detallePedido);
+			save.calcularPrecioVentaTotal(200.0);
+			save.calcularPrecioCostoTotal();
+			pedidoRepository.save(save);
 
-			pedido.getDetallePedidos().add(detallePedido1);
-			pedido.getDetallePedidos().add(detallePedido2);
-			pedido.setCliente(cliente2);
-			pedido.setEmpleado(empleado);
-			pedidoRepository.save(pedido);
+			Factura factura = new Factura();
+			factura.setFechaFacturacion(save.getFechaPedido());
+			factura.setFormaPago(save.getFormaPago());
+			factura.setSubTotal(save.getTotal());
+			if (save.getTipoEnvio() != TipoEnvio.DELIVERY) {
+				factura.setDescuento(save.getTotal() * 0.1);
+			} else {
+				factura.setDescuento(0.0);
+			}
+			factura.setTotal(factura.getSubTotal() - factura.getDescuento());
+			save.setFactura(factura);
+			save.setEmpleado(empleado);
+			save.setEstado(Estado.FACTURADO);
 
-			Random random = new Random();
-			Factura facturaBuilder = Factura.builder().fechaFacturacion(LocalDate.now())
-					.fechaBaja(fecha)
-					.descuento(0.0)
-					.formaPago(FormaPago.EFECTIVO)
-					.total(random.nextDouble() * 1000).build();
-
-			facturaRepository.save(facturaBuilder);
-
-			pedido.setFactura(facturaBuilder);
-
-			pedidoRepository.save(pedido);
-
-			pedido.calcularPrecioVentaTotal(0.0);
-			pedido.calcularPrecioCostoTotal();
-			pedidoRepository.save(pedido);
+			pedidoRepository.save(save);
 		};
 	}
 }

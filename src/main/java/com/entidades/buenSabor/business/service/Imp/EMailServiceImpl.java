@@ -25,9 +25,8 @@ public class EMailServiceImpl implements EMailService {
 
             mimeMessageHelper.setFrom(sender);
             mimeMessageHelper.setTo(to);
-            String[] Cc = new String[2];
+            String[] Cc = new String[1];
             Cc[0] = "velasconico001@gmail.com";
-            Cc[1] = "franco.silva1995@gmail.com";
 
             mimeMessageHelper.setCc(Cc);
             mimeMessageHelper.setSubject("Factura El Buen Sabor");

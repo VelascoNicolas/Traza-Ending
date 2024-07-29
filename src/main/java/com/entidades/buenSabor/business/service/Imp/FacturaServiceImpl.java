@@ -34,7 +34,10 @@ public class FacturaServiceImpl extends BaseServiceImp<Factura, Long> implements
         PdfWriter writer = new PdfWriter(baos);
         String fecha = String.valueOf(pedido.getFechaPedido());
         String[] partesFecha = fecha.split("-");
-
+        Double total = 0.0;
+        for (DetallePedido detallePedido : pedido.getDetallePedidos()) {
+            total += detallePedido.getSubTotal();
+        }
         String fechaConEspacios = "";
 
         for (int i = 0; i < partesFecha.length; i++) {
@@ -79,12 +82,21 @@ public class FacturaServiceImpl extends BaseServiceImp<Factura, Long> implements
                 .moveText(107, 740)
                 .showText(fechaConEspacios)
                 .endText();
-        //total
-        canvas.beginText()
-                .setFontAndSize(font, 15)
-                .moveText(460, 125)
-                .showText(String.valueOf(pedido.getTotal()))
-                .endText();
+        if (pedido.getTipoEnvio() == TipoEnvio.TAKE_AWAY) {
+            //total
+            canvas.beginText()
+                    .setFontAndSize(font, 15)
+                    .moveText(460, 125)
+                    .showText(String.valueOf(pedido.getTotal()))
+                    .endText();
+        } else {
+            //total
+            canvas.beginText()
+                    .setFontAndSize(font, 15)
+                    .moveText(460, 125)
+                    .showText(String.valueOf(pedido.getTotal()))
+                    .endText();
+        }
 
         //detalles
         int y = 515; // Posición inicial en Y para los detalles usar siempre el y
@@ -152,6 +164,25 @@ public class FacturaServiceImpl extends BaseServiceImp<Factura, Long> implements
                     .setFontAndSize(font, 15)
                     .moveText(460, y)
                     .showText(String.valueOf((pedido.getTotal() - pedido.calcularPrecioVentaTotal(0.0))))
+                    .endText();
+        } else {
+            //cantidad
+            canvas.beginText()
+                    .setFontAndSize(font, 15)
+                    .moveText(83, y)
+                    .showText("1")
+                    .endText();
+            //descripcion
+            canvas.beginText()
+                    .setFontAndSize(font, 15)
+                    .moveText(123, y)
+                    .showText( "Descuento")
+                    .endText();
+            //precio
+            canvas.beginText()
+                    .setFontAndSize(font, 15)
+                    .moveText(460, y)
+                    .showText(String.valueOf(total * 0.1))
                     .endText();
         }
 

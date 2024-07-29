@@ -27,7 +27,7 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
 
     @Query(value = "SELECT \n" +
             "    p.FECHA_PEDIDO AS Fecha,\n" +
-            "    CAST(SUM(dp.SUB_TOTAL) AS DECIMAL(10, 2)) AS Ingresos\n" +
+            "    CAST(SUM(p.TOTAL) AS DECIMAL(10, 2)) AS Ingresos\n" +
             "FROM \n" +
             "    Detalle_Pedido dp\n" +
             "JOIN \n" +
@@ -43,7 +43,7 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
     @Query(value = "SELECT \n" +
             "    EXTRACT(YEAR FROM p.FECHA_PEDIDO) AS Año,\n" +
             "    EXTRACT(MONTH FROM p.FECHA_PEDIDO) AS Mes,\n" +
-            "    CAST(SUM(dp.SUB_TOTAL) AS DECIMAL(10, 2)) AS Ingresos\n" +
+            "    CAST(SUM(p.TOTAL) AS DECIMAL(10, 2)) AS Ingresos\n" +
             "FROM \n" +
             "    Detalle_Pedido dp\n" +
             "JOIN \n" +
@@ -73,6 +73,6 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
     List<PedidosCliente> pedidosCliente(Date initialDate, Date endDate, Long idSucursal);//AND p.SUCURSAL_ID = :idSucursal
 
     @Query(value = "SELECT CAST(sum(total) as DECIMAL(10, 2) )as Ganancias  , sum(total_costo)as Costo, sum(total - total_costo) as \"Resultado\"\n" +
-            "from pedido WHERE FECHA_PEDIDO BETWEEN ?1 AND ?2 AND p.SUCURSAL_ID = ?3 AND p.SUCURSAL_ID = ?3 AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2", nativeQuery = true)
+            "from pedido WHERE FECHA_PEDIDO BETWEEN ?1 AND ?2 AND SUCURSAL_ID = ?3 AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2", nativeQuery = true)
     GananciasNetas gananciasNetas(Date initialDate, Date endDate, Long idSucursal);
 }

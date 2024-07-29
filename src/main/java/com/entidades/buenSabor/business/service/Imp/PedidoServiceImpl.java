@@ -89,16 +89,20 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Pedido agregarFactura(Long idPedido, Long idEmpleado) {
         Pedido pedido = getByID(idPedido);
+        Double total = 0.0;
         Factura factura = new Factura();
         factura.setFechaFacturacion(pedido.getFechaPedido());
         factura.setFormaPago(pedido.getFormaPago());
         factura.setSubTotal(pedido.getTotal());
         if (pedido.getTipoEnvio() != TipoEnvio.DELIVERY) {
-            factura.setDescuento(pedido.getTotal() * 0.1);
+            for (DetallePedido detallePedido : pedido.getDetallePedidos()) {
+                total += detallePedido.getSubTotal();
+            }
+            factura.setDescuento(total * 0.1);
         } else {
             factura.setDescuento(0.0);
         }
-        factura.setTotal(factura.getSubTotal() - factura.getDescuento());
+        factura.setTotal(pedido.getTotal());
         pedido.setFactura(factura);
         pedido.setEmpleado(empleadoRepository.findById(idEmpleado).orElse(null));
         pedido.setEstado(Estado.FACTURADO);
@@ -382,7 +386,7 @@ public class PedidoServiceImpl implements PedidoService {
         } else {
             tiempo = actual + cocina;
         }
-        LocalTime horaEstimada = LocalTime.of(0,0);
+        LocalTime horaEstimada = LocalTime.now();
         horaEstimada = horaEstimada.plusMinutes(tiempo);
         return horaEstimada;
     }
