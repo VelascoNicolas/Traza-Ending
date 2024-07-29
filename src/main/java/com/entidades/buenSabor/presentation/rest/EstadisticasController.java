@@ -19,46 +19,46 @@ public class EstadisticasController {
     @Autowired
     private EstadisticasService service;
 
-    @GetMapping("/ranking")
-    public ResponseEntity<?> rankin (
+    @GetMapping("/ranking/{idSucursal}")
+    public ResponseEntity<?> rankin ( @PathVariable Long idSucursal,
             @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
             @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta){
-        return ResponseEntity.ok(service.bestProducts(fechaDesde, fechaHasta));
+        return ResponseEntity.ok(service.bestProducts(fechaDesde, fechaHasta, idSucursal));
     }
 
-    @GetMapping("/recaudacionesDiarias")
-    public ResponseEntity<?> recaudacionesDiarias (
+    @GetMapping("/recaudacionesDiarias/{idSucursal}")
+    public ResponseEntity<?> recaudacionesDiarias (@PathVariable Long idSucursal,
             @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
             @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta){
-        return ResponseEntity.ok(service.ingresosDiarios(fechaDesde, fechaHasta));
+        return ResponseEntity.ok(service.ingresosDiarios(fechaDesde, fechaHasta, idSucursal));
     }
 
-    @GetMapping("/recaudacionesMensuales")
-    public ResponseEntity<?> recaudacionesMensuales (
+    @GetMapping("/recaudacionesMensuales/{idSucursal}")
+    public ResponseEntity<?> recaudacionesMensuales (@PathVariable Long idSucursal,
             @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
             @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta){
-        return ResponseEntity.ok(service.ingresosMensuales(fechaDesde, fechaHasta));
+        return ResponseEntity.ok(service.ingresosMensuales(fechaDesde, fechaHasta, idSucursal));
     }
 
-    @GetMapping("/costosGanancias")
-    public ResponseEntity<?> costosGanancias (
+    @GetMapping("/costosGanancias/{idSucursal}")
+    public ResponseEntity<?> costosGanancias (@PathVariable Long idSucursal,
             @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
             @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta){
-        return ResponseEntity.ok(service.findCostosGananciasByFecha(fechaDesde, fechaHasta));
+        return ResponseEntity.ok(service.findCostosGananciasByFecha(fechaDesde, fechaHasta, idSucursal));
     }
 
-    @GetMapping("/pedidosCliente")
-    public ResponseEntity<?> pedidosCliente (
+    @GetMapping("/pedidosCliente/{idSucursal}")
+    public ResponseEntity<?> pedidosCliente (@PathVariable Long idSucursal,
             @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
             @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta){
-        return ResponseEntity.ok(service.findCantidadPedidosPorCliente(fechaDesde, fechaHasta));
+        return ResponseEntity.ok(service.findCantidadPedidosPorCliente(fechaDesde, fechaHasta, idSucursal));
     }
 
-    @GetMapping("/excelRanking")
-    public ResponseEntity<?> excelRanking (
+    @GetMapping("/excelRanking/{idSucursal}")
+    public ResponseEntity<?> excelRanking (@PathVariable Long idSucursal,
             @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
             @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta) throws IOException {
-        byte[] excelContent = service.rankingExcel(fechaDesde, fechaHasta);
+        byte[] excelContent = service.rankingExcel(fechaDesde, fechaHasta, idSucursal);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=estadisticasRanking.xlsx");
@@ -70,11 +70,11 @@ public class EstadisticasController {
                 .body(excelContent);
     }
 
-    @GetMapping("/excelIDiario")
-    public ResponseEntity<?> excelDiario (
+    @GetMapping("/excelIDiario/{idSucursal}")
+    public ResponseEntity<?> excelDiario (@PathVariable Long idSucursal,
             @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
             @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta) throws IOException {
-        byte[] excelContent = service.ingresosDiariosExcel(fechaDesde, fechaHasta);
+        byte[] excelContent = service.ingresosDiariosExcel(fechaDesde, fechaHasta, idSucursal);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=estadisticasIDiario.xlsx");
@@ -86,11 +86,11 @@ public class EstadisticasController {
                 .body(excelContent);
     }
 
-    @GetMapping("/excelIMensual")
-    public ResponseEntity<?> excelMensual (
+    @GetMapping("/excelIMensual/{idSucursal}")
+    public ResponseEntity<?> excelMensual (@PathVariable Long idSucursal,
             @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
             @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta) throws IOException {
-        byte[] excelContent = service.ingresosMensualesExcel(fechaDesde, fechaHasta);
+        byte[] excelContent = service.ingresosMensualesExcel(fechaDesde, fechaHasta, idSucursal);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=estadisticasIMensual.xlsx");
@@ -102,11 +102,11 @@ public class EstadisticasController {
                 .body(excelContent);
     }
 
-    @GetMapping("/excelGanancias")
-    public ResponseEntity<?> excelGanancias (
+    @GetMapping("/excelGanancias/{idSucursal}")
+    public ResponseEntity<?> excelGanancias (@PathVariable Long idSucursal,
             @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
             @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta) throws IOException {
-        byte[] excelContent = service.gananciasNetasExcel(fechaDesde, fechaHasta);
+        byte[] excelContent = service.gananciasNetasExcel(fechaDesde, fechaHasta, idSucursal);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=estadisticasGanancias.xlsx");
@@ -118,11 +118,11 @@ public class EstadisticasController {
                 .body(excelContent);
 
     }
-    @GetMapping("/excelPedidos")
-    public ResponseEntity<byte[]> excelPedidos (
+    @GetMapping("/excelPedidos/{idSucursal}")
+    public ResponseEntity<byte[]> excelPedidos (@PathVariable Long idSucursal,
             @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
             @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta) throws IOException {
-        byte[] excelContent = service.cantidadPedidosPorClienteExcel(fechaDesde, fechaHasta);
+        byte[] excelContent = service.cantidadPedidosPorClienteExcel(fechaDesde, fechaHasta, idSucursal);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=estadisticasPedidos.xlsx");

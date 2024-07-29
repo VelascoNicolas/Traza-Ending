@@ -16,11 +16,6 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping
-    public ResponseEntity<?> getTodos() {
-        return ResponseEntity.status(HttpStatus.OK).body(clienteService.getTodos());
-    }
-
     @GetMapping("/{userName}")
     public ResponseEntity<?> getByUserName(@PathVariable String userName) {
         return ResponseEntity.status(HttpStatus.OK).body(clienteService.getByUserName(userName));

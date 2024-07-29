@@ -30,32 +30,32 @@ public class EstadisticasServiceImpl implements EstadisticasService {
     private DetallePedidoRepository detallePedidoRepository;
 
     @Override
-    public List<RankingProductos> bestProducts(Date initialDate, Date endDate) {
-        return detallePedidoRepository.mejoresProductos(initialDate, endDate);
+    public List<RankingProductos> bestProducts(Date initialDate, Date endDate, Long idSucursal) {
+        return detallePedidoRepository.mejoresProductos(initialDate, endDate, idSucursal);
     }
 
     @Override
-    public List<IngresosDiarios> ingresosDiarios(Date initialDate, Date endDate) {
-        return pedidoRepository.ingresosDiarios(initialDate, endDate);
+    public List<IngresosDiarios> ingresosDiarios(Date initialDate, Date endDate, Long idSucursal) {
+        return pedidoRepository.ingresosDiarios(initialDate, endDate, idSucursal);
     }
 
     @Override
-    public List<IngresosMenusales> ingresosMensuales(Date initialDate, Date endDate) {
-        return pedidoRepository.ingresosMenusales(initialDate, endDate);
+    public List<IngresosMenusales> ingresosMensuales(Date initialDate, Date endDate, Long idSucursal) {
+        return pedidoRepository.ingresosMenusales(initialDate, endDate, idSucursal);
     }
 
     @Override
-    public GananciasNetas findCostosGananciasByFecha(Date initialDate, Date endDate) {
-        return pedidoRepository.gananciasNetas(initialDate, endDate);
+    public GananciasNetas findCostosGananciasByFecha(Date initialDate, Date endDate, Long idSucursal) {
+        return pedidoRepository.gananciasNetas(initialDate, endDate, idSucursal);
     }
 
     @Override
-    public List<PedidosCliente> findCantidadPedidosPorCliente(Date startDate, Date endDate) {
-        return pedidoRepository.pedidosCliente(startDate, endDate);
+    public List<PedidosCliente> findCantidadPedidosPorCliente(Date startDate, Date endDate, Long idSucursal) {
+        return pedidoRepository.pedidosCliente(startDate, endDate, idSucursal);
     }
 
     @Override
-    public byte[] rankingExcel(Date fechaDesde, Date fechaHasta) throws IOException {
+    public byte[] rankingExcel(Date fechaDesde, Date fechaHasta, Long idSucursal) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         XSSFWorkbook workbook = new XSSFWorkbook();
 
@@ -69,7 +69,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
             cell.setCellValue(headers[i]);
         }
 
-        List<RankingProductos> ranking = bestProducts(fechaDesde, fechaHasta);
+        List<RankingProductos> ranking = bestProducts(fechaDesde, fechaHasta, idSucursal);
 
         int rowNum = 1;
         for (RankingProductos r : ranking){
@@ -91,7 +91,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
     }
 
     @Override
-    public byte[] ingresosDiariosExcel(Date fechaDesde, Date fechaHasta) throws IOException {
+    public byte[] ingresosDiariosExcel(Date fechaDesde, Date fechaHasta, Long idSucursal) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
         Sheet sheet2 = workbook.createSheet("Ingresos Diarios");
 
@@ -103,7 +103,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
             cell.setCellValue(headersIngresosDiarios[i]);
         }
 
-        List<IngresosDiarios> ingresosDiarios = ingresosDiarios(fechaDesde, fechaHasta);
+        List<IngresosDiarios> ingresosDiarios = ingresosDiarios(fechaDesde, fechaHasta, idSucursal);
 
         int rowNum = 1;
         for (IngresosDiarios ingre : ingresosDiarios) {
@@ -125,7 +125,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
     }
 
     @Override
-    public byte[] ingresosMensualesExcel(Date fechaDesde, Date fechaHasta) throws IOException {
+    public byte[] ingresosMensualesExcel(Date fechaDesde, Date fechaHasta, Long idSucursal) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
 
         Sheet sheet3 = workbook.createSheet("Ingresos Mensuales");
@@ -138,7 +138,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
             cell.setCellValue(headersIngresosMensuales[i]);
         }
 
-        List<IngresosMenusales> ingresosMensuales = ingresosMensuales(fechaDesde, fechaHasta);
+        List<IngresosMenusales> ingresosMensuales = ingresosMensuales(fechaDesde, fechaHasta, idSucursal);
 
         int rowNum = 1;
         for (IngresosMenusales r : ingresosMensuales){
@@ -161,7 +161,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
     }
 
     @Override
-    public byte[] gananciasNetasExcel(Date fechaDesde, Date fechaHasta) throws IOException {
+    public byte[] gananciasNetasExcel(Date fechaDesde, Date fechaHasta, Long idSucursal) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
 
         Sheet sheet5 = workbook.createSheet("Monto de Ganancia");
@@ -174,7 +174,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
             cell.setCellValue(headersGanancia[i]);
         }
 
-        GananciasNetas costoGanancias = findCostosGananciasByFecha(fechaDesde, fechaHasta);
+        GananciasNetas costoGanancias = findCostosGananciasByFecha(fechaDesde, fechaHasta, idSucursal);
 
         int rowNum = 1;
         Row row = sheet5.createRow(rowNum++);
@@ -196,7 +196,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
     }
 
     @Override
-    public byte[] cantidadPedidosPorClienteExcel(Date fechaDesde, Date fechaHasta) throws IOException {
+    public byte[] cantidadPedidosPorClienteExcel(Date fechaDesde, Date fechaHasta, Long idSucursal) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
         Sheet sheet4 = workbook.createSheet("Pedidos por Cliente");
 
@@ -208,7 +208,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
             cell.setCellValue(headersPedidoClientes[i]);
         }
 
-        List<PedidosCliente> pedidosClientes = findCantidadPedidosPorCliente(fechaDesde, fechaHasta);
+        List<PedidosCliente> pedidosClientes = findCantidadPedidosPorCliente(fechaDesde, fechaHasta, idSucursal);
 
         int rowNum = 1;
         for (PedidosCliente r : pedidosClientes){

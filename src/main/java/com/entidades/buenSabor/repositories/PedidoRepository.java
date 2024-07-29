@@ -33,12 +33,12 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
             "JOIN \n" +
             "    Pedido p ON dp.PEDIDO_ID = p.ID\n" +
             "WHERE \n" +
-            "    p.FECHA_PEDIDO BETWEEN :initialDate AND :endDate AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2\n" +
+            "    p.FECHA_PEDIDO BETWEEN ?1 AND ?2 AND p.SUCURSAL_ID = ?3 AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2\n" +
             "GROUP BY \n" +
             "    p.FECHA_PEDIDO\n" +
             "ORDER BY \n" +
             "    p.FECHA_PEDIDO;\n", nativeQuery = true)
-    List<IngresosDiarios> ingresosDiarios(Date initialDate, Date endDate);
+    List<IngresosDiarios> ingresosDiarios(Date initialDate, Date endDate, Long idSucursal);//AND p.SUCURSAL_ID = :idSucursal
 
     @Query(value = "SELECT \n" +
             "    EXTRACT(YEAR FROM p.FECHA_PEDIDO) AS Año,\n" +
@@ -49,12 +49,12 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
             "JOIN \n" +
             "    Pedido p ON dp.PEDIDO_ID = p.ID\n" +
             "WHERE \n" +
-            "    p.FECHA_PEDIDO BETWEEN :initialDate AND :endDate AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2\n" +
+            "    p.FECHA_PEDIDO BETWEEN ?1 AND ?2 AND p.SUCURSAL_ID = ?3 AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2\n" +
             "GROUP BY \n" +
             "    EXTRACT(YEAR FROM p.FECHA_PEDIDO), EXTRACT(MONTH FROM p.FECHA_PEDIDO)\n" +
             "ORDER BY \n" +
             "    Año, Mes;\n", nativeQuery = true)
-    List<IngresosMenusales> ingresosMenusales(Date initialDate, Date endDate);
+    List<IngresosMenusales> ingresosMenusales(Date initialDate, Date endDate, Long idSucursal);//AND p.SUCURSAL_ID = :idSucursal
 
     @Query(value = "SELECT \n" +
             "    c.USER_NAME AS Email,\n" +
@@ -65,14 +65,14 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
             "JOIN \n" +
             "    Cliente c ON p.USER_NAME = c.USER_NAME\n" +
             "WHERE \n" +
-            "    p.FECHA_PEDIDO BETWEEN :initialDate AND :endDate AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2\n" +
+            "    p.FECHA_PEDIDO BETWEEN ?1 AND ?2 AND p.SUCURSAL_ID = ?3 AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2\n" +
             "GROUP BY \n" +
             "    c.USER_NAME, c.NOMBRE, c.APELLIDO, p.FECHA_PEDIDO\n" +
             "ORDER BY \n" +
             "    c.USER_NAME, p.FECHA_PEDIDO;\n", nativeQuery = true)
-    List<PedidosCliente> pedidosCliente(Date initialDate, Date endDate);
+    List<PedidosCliente> pedidosCliente(Date initialDate, Date endDate, Long idSucursal);//AND p.SUCURSAL_ID = :idSucursal
 
     @Query(value = "SELECT CAST(sum(total) as DECIMAL(10, 2) )as Ganancias  , sum(total_costo)as Costo, sum(total - total_costo) as \"Resultado\"\n" +
-            "from pedido WHERE FECHA_PEDIDO BETWEEN ?1 AND ?2 AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2", nativeQuery = true)
-    GananciasNetas gananciasNetas(Date initialDate, Date endDate);
+            "from pedido WHERE FECHA_PEDIDO BETWEEN ?1 AND ?2 AND p.SUCURSAL_ID = ?3 AND p.SUCURSAL_ID = ?3 AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2", nativeQuery = true)
+    GananciasNetas gananciasNetas(Date initialDate, Date endDate, Long idSucursal);
 }

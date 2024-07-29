@@ -22,10 +22,10 @@ public interface DetallePedidoRepository extends BaseRepository<DetallePedido,Lo
             "JOIN \n" +
             "    Articulo a ON dp.ARTICULO_ID = a.ID\n" +
             "WHERE \n" +
-            "     p.FECHA_PEDIDO BETWEEN ?1 AND ?2 AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2\n" +
+            "     p.FECHA_PEDIDO BETWEEN ?1 AND ?2 AND p.SUCURSAL_ID = ?3 AND ESTADO != 4 AND ESTADO != 5 AND ESTADO != 2\n" +
             "GROUP BY \n" +
             "    a.DENOMINACION\n" +
             "ORDER BY \n" +
             "    CantidadTotal DESC\n", nativeQuery = true)
-    List<RankingProductos> mejoresProductos(Date initialDate, Date endDate);
+    List<RankingProductos> mejoresProductos(Date initialDate, Date endDate, Long idSucursal);//AND p.SUCURSAL_ID = ?3
 }
