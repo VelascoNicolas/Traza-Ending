@@ -51,7 +51,7 @@ public class EstadisticasServiceImpl implements EstadisticasService {
                             x += detallePedido.getCantidad() * promoDetalle.getCantidad();
                             datos.put(deno, x);
                         } else {
-                            x += detallePedido.getCantidad();
+                            x += detallePedido.getCantidad() * promoDetalle.getCantidad();
                             datos.put(promoDetalle.getArticulo().getDenominacion(), x);
                         }
                     }
