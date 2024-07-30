@@ -527,7 +527,7 @@ public class BuenSaborApplication {
 			save.setCliente(cliente);
 			save.setEmpleado(empleado);
 			save.setTiempoDeEspera(LocalTime.of(16,30));
-
+			
 			DetallePedido detallePedido = new DetallePedido();
 			detallePedido.setEliminado(false);
 			detallePedido.setFechaBaja(fecha);
