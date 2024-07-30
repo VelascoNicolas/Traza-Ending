@@ -386,7 +386,7 @@ public class PedidoServiceImpl implements PedidoService {
         } else {
             tiempo = actual + cocina;
         }
-        LocalTime horaEstimada = LocalTime.now();
+        LocalTime horaEstimada = LocalTime.of(0,0);
         horaEstimada = horaEstimada.plusMinutes(tiempo);
         return horaEstimada;
     }
