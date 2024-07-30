@@ -76,6 +76,20 @@ public class EstadisticasServiceImpl implements EstadisticasService {
                             }
                         };
                         entrega.add(nuevito);
+                    } else {
+                        int i = datos.get(nombre);
+                        RankingProductos nuevito2 = new RankingProductos() {
+                            @Override
+                            public String getArticulo() {
+                                return nombre;
+                            }
+
+                            @Override
+                            public Integer getCantidadTotal() {
+                                return i;
+                            }
+                        };
+                        entrega.add(nuevito2);
                     }
                 }
             }
