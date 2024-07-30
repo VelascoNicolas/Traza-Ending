@@ -5,7 +5,6 @@ import com.entidades.buenSabor.business.service.Imp.ArticuloServiceImpl;
 import com.entidades.buenSabor.business.service.Imp.PedidoServiceImpl;
 import com.entidades.buenSabor.business.service.Imp.PromocionServiceImpl;
 import com.entidades.buenSabor.business.service.PromocionService;
-import com.entidades.buenSabor.domain.dto.DetallePedidoDTO;
 import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.domain.enums.*;
 import com.entidades.buenSabor.repositories.*;
@@ -25,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 
@@ -229,8 +227,8 @@ public class BuenSaborApplication {
 
 			// Crear Insumos , coca cola , harina , etc
 			ArticuloInsumo cocaCola = ArticuloInsumo.builder().fechaBaja(fecha).
-					denominacion("Coca cola").
-					unidadMedida(unidadMedidaLitros).
+					denominacion("Coca-Cola 1.5L").
+					unidadMedida(unidadMedidaCantidad).
 					esParaElaborar(false).
 					categoria(categoriaGaseosas).
 					precioCompra(50.0).
@@ -471,7 +469,7 @@ public class BuenSaborApplication {
 
 			Cliente cliente2 = new Cliente();
 
-            cliente2.setFechaBaja(fecha);
+			cliente2.setFechaBaja(fecha);
 			cliente2.setEliminado(false);
 			cliente2.setImagenCliente(imagenCliente2);
 			cliente2.setUserName("cliente@cliente.com");
