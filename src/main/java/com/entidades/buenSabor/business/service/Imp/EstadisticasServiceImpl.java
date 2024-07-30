@@ -50,6 +50,9 @@ public class EstadisticasServiceImpl implements EstadisticasService {
                         if (promoDetalle.getArticulo().getDenominacion().equalsIgnoreCase(deno)) {
                             x += detallePedido.getCantidad() * promoDetalle.getCantidad();
                             datos.put(deno, x);
+                        } else {
+                            x += detallePedido.getCantidad();
+                            datos.put(promoDetalle.getArticulo().getDenominacion(), x);
                         }
                     }
                 }
