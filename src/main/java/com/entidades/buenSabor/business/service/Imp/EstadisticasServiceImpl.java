@@ -21,9 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EstadisticasServiceImpl implements EstadisticasService {
@@ -36,56 +34,52 @@ public class EstadisticasServiceImpl implements EstadisticasService {
 
     @Override
     public List<RankingProductos> bestProducts(Date initialDate, Date endDate, Long idSucursal) {
-        Integer x = 0;
-        List<RankingProductos> entrega = new ArrayList<>();
         List<RankingProductos> ranking = detallePedidoRepository.mejoresProductos(initialDate, endDate, idSucursal);
-        List<Pedido> pedidos = pedidoRepository.findBySucursal(idSucursal);
-        for (RankingProductos producto : ranking) {
-            for (Pedido pedido : pedidos) {
-                for (DetallePedido detallePedido : pedido.getDetallePedidos()) {
-                    if (detallePedido.getPromocion() != null) {
-                        Promocion promocion = detallePedido.getPromocion();
-                        for (PromocionDetalle detalle : promocion.getPromocionDetalles()) {
-                            if (detalle.getArticulo().getDenominacion() == producto.getArticulo()) {
-                                x = producto.getCantidadTotal() + (detallePedido.getCantidad() * detalle.getCantidad());
-                            } else {
-                                x = (detallePedido.getCantidad() * detalle.getCantidad());
-                                Integer finalX = x;
-                                RankingProductos nuevo = new RankingProductos() {
-                                    @Override
-                                    public String getArticulo() {
-                                        return detalle.getArticulo().getDenominacion();
-                                    }
+        List<DetallePedido> detalles = detallePedidoRepository.getByFechasYSucursal(initialDate, endDate, idSucursal);
+        List<RankingProductos> entrega = new ArrayList<>();
+        Map<String, Integer> datos = new HashMap<>();
+        int cont = 0;
 
-                                    @Override
-                                    public Integer getCantidadTotal() {
-                                        return finalX;
-                                    }
-                                };
-                                entrega.add(nuevo);
-                            }
+        for (RankingProductos r : ranking) {
+            String deno = r.getArticulo();
+            Integer x = 0;
+            for (DetallePedido detallePedido : detalles) {
+                if (detallePedido.getPromocion() != null) {
+                    cont++;
+                    for (PromocionDetalle promoDetalle : detallePedido.getPromocion().getPromocionDetalles()) {
+                        if (promoDetalle.getArticulo().getDenominacion().equalsIgnoreCase(deno)) {
+                            x += detallePedido.getCantidad() * promoDetalle.getCantidad();
+                            datos.put(deno, x);
                         }
                     }
                 }
             }
         }
+        if (cont > 0) {
+            for (RankingProductos r: ranking) {
+                String x = r.getArticulo();
+                for (String nombre: datos.keySet()) {
+                    if (nombre.equalsIgnoreCase(x)) {
+                        int i = datos.get(nombre) + r.getCantidadTotal();
+                        RankingProductos nuevito = new RankingProductos() {
+                            @Override
+                            public String getArticulo() {
+                                return nombre;
+                            }
 
-        for (RankingProductos producto : ranking) {
-            Integer finalX = x;
-            RankingProductos producto2 = new RankingProductos() {
-                @Override
-                public String getArticulo() {
-                    return producto.getArticulo();
+                            @Override
+                            public Integer getCantidadTotal() {
+                                return i;
+                            }
+                        };
+                        entrega.add(nuevito);
+                    }
                 }
-
-                @Override
-                public Integer getCantidadTotal() {
-                    return finalX;
-                }
-            };
-            entrega.add(producto2);
+            }
+            return entrega;
+        } else {
+            return ranking;
         }
-        return entrega;
     }
 
     @Override

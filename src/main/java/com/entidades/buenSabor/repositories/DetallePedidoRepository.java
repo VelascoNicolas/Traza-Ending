@@ -28,4 +28,12 @@ public interface DetallePedidoRepository extends BaseRepository<DetallePedido,Lo
             "ORDER BY \n" +
             "    CantidadTotal DESC\n", nativeQuery = true)
     List<RankingProductos> mejoresProductos(Date initialDate, Date endDate, Long idSucursal);
+
+    @Query(value = "SELECT dp.ID, dp.ELIMINADO, dp.FECHA_BAJA, dp.CANTIDAD, dp.SUB_TOTAL, dp.ARTICULO_ID, dp.PROMOCION_ID, dp.PEDIDO_ID\n" +
+            "FROM DETALLE_PEDIDO dp\n" +
+            "INNER JOIN PEDIDO p ON dp.PEDIDO_ID = p.ID\n" +
+            "WHERE p.FECHA_PEDIDO BETWEEN :fechaInicio AND :fechaFin\n" +
+            "  AND p.SUCURSAL_ID = :sucursalId \n" +
+            "AND p.ESTADO != 4 AND p.ESTADO != 5 AND p.ESTADO != 2", nativeQuery = true)
+    List<DetallePedido> getByFechasYSucursal(Date fechaInicio, Date fechaFin, Long sucursalId);
 }
