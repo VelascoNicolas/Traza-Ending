@@ -524,7 +524,7 @@ public class BuenSaborApplication {
 			save.setTipoEnvio(TipoEnvio.TAKE_AWAY);
 			save.setFormaPago(FormaPago.EFECTIVO);
 			save.setDomicilio(domicilioCliente);
-			save.setSucursal(sucursalGuaymallen);
+			save.setSucursal(sucursalMarDelPlata);
 			save.setFactura(null);
 			save.setCliente(cliente);
 			save.setEmpleado(empleado);

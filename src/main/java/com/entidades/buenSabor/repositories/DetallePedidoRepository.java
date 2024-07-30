@@ -27,5 +27,5 @@ public interface DetallePedidoRepository extends BaseRepository<DetallePedido,Lo
             "    a.DENOMINACION\n" +
             "ORDER BY \n" +
             "    CantidadTotal DESC\n", nativeQuery = true)
-    List<RankingProductos> mejoresProductos(Date initialDate, Date endDate, Long idSucursal);//AND p.SUCURSAL_ID = ?3
+    List<RankingProductos> mejoresProductos(Date initialDate, Date endDate, Long idSucursal);
 }

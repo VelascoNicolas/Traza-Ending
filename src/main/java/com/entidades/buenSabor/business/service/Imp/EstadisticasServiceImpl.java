@@ -2,6 +2,10 @@ package com.entidades.buenSabor.business.service.Imp;
 
 import com.entidades.buenSabor.business.service.EstadisticasService;
 import com.entidades.buenSabor.domain.dto.ProyeccionesEstadisticas.*;
+import com.entidades.buenSabor.domain.entities.DetallePedido;
+import com.entidades.buenSabor.domain.entities.Pedido;
+import com.entidades.buenSabor.domain.entities.Promocion;
+import com.entidades.buenSabor.domain.entities.PromocionDetalle;
 import com.entidades.buenSabor.repositories.DetallePedidoRepository;
 import com.entidades.buenSabor.repositories.PedidoRepository;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -17,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +36,56 @@ public class EstadisticasServiceImpl implements EstadisticasService {
 
     @Override
     public List<RankingProductos> bestProducts(Date initialDate, Date endDate, Long idSucursal) {
-        return detallePedidoRepository.mejoresProductos(initialDate, endDate, idSucursal);
+        Integer x = 0;
+        List<RankingProductos> entrega = new ArrayList<>();
+        List<RankingProductos> ranking = detallePedidoRepository.mejoresProductos(initialDate, endDate, idSucursal);
+        List<Pedido> pedidos = pedidoRepository.findBySucursal(idSucursal);
+        for (RankingProductos producto : ranking) {
+            for (Pedido pedido : pedidos) {
+                for (DetallePedido detallePedido : pedido.getDetallePedidos()) {
+                    if (detallePedido.getPromocion() != null) {
+                        Promocion promocion = detallePedido.getPromocion();
+                        for (PromocionDetalle detalle : promocion.getPromocionDetalles()) {
+                            if (detalle.getArticulo().getDenominacion() == producto.getArticulo()) {
+                                x = producto.getCantidadTotal() + (detallePedido.getCantidad() * detalle.getCantidad());
+                            } else {
+                                x = (detallePedido.getCantidad() * detalle.getCantidad());
+                                Integer finalX = x;
+                                RankingProductos nuevo = new RankingProductos() {
+                                    @Override
+                                    public String getArticulo() {
+                                        return detalle.getArticulo().getDenominacion();
+                                    }
+
+                                    @Override
+                                    public Integer getCantidadTotal() {
+                                        return finalX;
+                                    }
+                                };
+                                entrega.add(nuevo);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (RankingProductos producto : ranking) {
+            Integer finalX = x;
+            RankingProductos producto2 = new RankingProductos() {
+                @Override
+                public String getArticulo() {
+                    return producto.getArticulo();
+                }
+
+                @Override
+                public Integer getCantidadTotal() {
+                    return finalX;
+                }
+            };
+            entrega.add(producto2);
+        }
+        return entrega;
     }
 
     @Override
